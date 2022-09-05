@@ -3,6 +3,13 @@ body {
     color: white;
 }
 
+.adminListUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
 .addUser-main {
     display: flex;
     flex-direction: column;

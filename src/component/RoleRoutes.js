@@ -5,7 +5,7 @@ import Login from "../page/Login";
 import UserContext from "../context/UserContext";
 import ListCourses from "../page/ListCourses";
 import AdminAddUser from "../page/AdminAddUser";
-import AdminListUsers from "../page/AdminListUsers";
+import AdminListUsers from "../page/AdminListUsers/AdminListUsers";
 import NotFound from "../page/NotFound";
 
 function RoleRoutes() {
