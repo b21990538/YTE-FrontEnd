@@ -1,15 +1,10 @@
 import './App.css';
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-} from "react-router-dom";
-import Navbar from "./component/Navbar";
-import Login from "./page/Login";
-import Home from "./page/Home";
+import 'react-toastify/dist/ReactToastify.css';
+import {BrowserRouter as Router} from "react-router-dom";
 import AppWrapper from "./component/AppWrapper";
 import UserContext from "./context/UserContext";
-import {useState} from "react";
+import React, {useState} from "react";
+import {ToastContainer} from "react-toastify";
 
 function App() {
 
@@ -23,6 +18,7 @@ function App() {
     return <Router>
         <UserContext.Provider value={userContextData}>
             <AppWrapper/>
+            <ToastContainer/>
         </UserContext.Provider>
     </Router>;
 }

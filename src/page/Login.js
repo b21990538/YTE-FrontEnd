@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import UserContext from "../context/UserContext";
 import {useNavigate} from "react-router-dom";
 
@@ -34,9 +33,7 @@ function Login() {
         <input onChange={(e) => setUsername(e.target.value)}/>
         <b>Password</b>
         <input type={"password"} onChange={(e) => setPassword(e.target.value)}/>
-
         <button className={"login-button"} onClick={handleLogin}>Login</button>
-        <ToastContainer/>
     </div>;
 }
 
