@@ -7,6 +7,7 @@ import ListCourses from "../page/ListCourses";
 import AdminAddUser from "../page/AdminAddUser";
 import AdminListUsers from "../page/AdminListUsers/AdminListUsers";
 import NotFound from "../page/NotFound";
+import CourseAdd from "../page/CourseAdd/CourseAdd";
 
 function RoleRoutes() {
 
@@ -26,6 +27,7 @@ function RoleRoutes() {
             <Route path="/" element={<Home/>}/>
             <Route path="/addUser" element={<AdminAddUser/>}/>
             <Route path="/listUsers" element={<AdminListUsers/>}/>
+            <Route path="/addCourse" element={<CourseAdd/>}/>
             <Route path="/*" element={<NotFound/>}/>
         </Routes>;
     }

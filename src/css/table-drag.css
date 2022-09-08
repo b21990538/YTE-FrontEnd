@@ -1,0 +1,34 @@
+/* Cells that can be interacted with */
+.table-drag-select td.cell-enabled {
+    color: #ffffff;
+    background-color: #000000;
+}
+
+/* Cells that cannot be interacted with */
+.table-drag-select td.cell-disabled {
+    /* Put yer css here */
+}
+
+/* Cells that have been selected */
+.table-drag-select td.cell-selected {
+    background-color: #e5e5e5;
+    color: #000000;
+}
+
+/* Cells that are in the process of being selected */
+.table-drag-select td.cell-being-selected {
+    background-color: #EACA96;
+}
+
+/* Cells in first row */
+.table-drag-select tr:first-child td {
+    /* Remove empty space at top of table */
+
+    line-height: 3rem;
+}
+
+/* Cells in first column */
+.table-drag-select td:first-child {
+    /* Consume less whitespace */
+    width: 5rem;
+}

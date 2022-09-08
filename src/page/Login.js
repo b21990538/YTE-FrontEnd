@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import UserContext from "../context/UserContext";
 import {useNavigate} from "react-router-dom";
+import {Button, TextField} from "@mui/material";
 
 function Login() {
 
@@ -29,11 +30,11 @@ function Login() {
 
     return <div className="login-main">
         <h1>YTE Student Management System</h1>
-        <b>Username</b>
-        <input onChange={(e) => setUsername(e.target.value)}/>
-        <b>Password</b>
-        <input type={"password"} onChange={(e) => setPassword(e.target.value)}/>
-        <button className={"login-button"} onClick={handleLogin}>Login</button>
+        <TextField id="outlined-basic" label="Username" variant="outlined"
+                   onChange={(e) => setUsername(e.target.value)} margin={"normal"}/>
+        <TextField id="outlined-password-input" label="Password" variant="outlined"
+                   onChange={(e) => setPassword(e.target.value)} type="password" margin={"normal"}/>
+        <Button onClick={handleLogin} variant={"outlined"}>Login</Button>
     </div>;
 }
 

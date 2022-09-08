@@ -1,10 +1,21 @@
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-table-drag-select/style.css';
+import './css/table-drag.css'
+import './css/course-add.css'
 import {BrowserRouter as Router} from "react-router-dom";
 import AppWrapper from "./component/AppWrapper";
 import UserContext from "./context/UserContext";
 import React, {useState} from "react";
 import {ToastContainer} from "react-toastify";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
 
 function App() {
 
@@ -17,8 +28,11 @@ function App() {
 
     return <Router>
         <UserContext.Provider value={userContextData}>
-            <AppWrapper/>
-            <ToastContainer/>
+            <ThemeProvider theme={darkTheme}>
+                <CssBaseline/>
+                <AppWrapper/>
+                <ToastContainer/>
+            </ThemeProvider>
         </UserContext.Provider>
     </Router>;
 }

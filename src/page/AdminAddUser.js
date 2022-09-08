@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import DropdownList from "../component/DropdownList";
+import TypeSelector from "../component/TypeSelector";
 import axios from "axios";
 import {toast} from "react-toastify";
 import TypeList from "../values/TypeList";
+import {Button, TextField} from "@mui/material";
 
 function AdminAddUser() {
-
-
 
     const [username, setUsername] = useState(null);
     const [pass, setPass] = useState(null);
@@ -38,16 +37,28 @@ function AdminAddUser() {
 
     return <div className={"addUser-main"}>
         <h2>Add User</h2>
-        <DropdownList onChange={handleTypeSelect} value={type} label={"select user type"} options={TypeList}/>
-        <b>Name</b>
-        <input onChange={(e) => setName(e.target.value)}/>
-        <b>Surname</b>
-        <input onChange={(e) => setSurname(e.target.value)}/>
-        <b>Email</b>
-        <input onChange={(e) => setEmail(e.target.value)}/>
-        <button onClick={handleAddUser}>Add User</button>
-        <div>{username ? "Generated Username:" + username: ""}</div>
-        <div>{pass ? "Generated Password:" + pass: ""}</div>
+        <TypeSelector onChange={handleTypeSelect} value={type} options={TypeList}/>
+        <TextField label="Name" variant="outlined"
+                   onChange={(e) => setName(e.target.value)} margin={"normal"}/>
+        <TextField label="Surname" variant="outlined"
+                   onChange={(e) => setSurname(e.target.value)} margin={"normal"}/>
+        <TextField label="Email" variant="outlined"
+                   onChange={(e) => setEmail(e.target.value)} margin={"normal"}/>
+        <Button onClick={handleAddUser} variant={"outlined"}>Add User</Button>
+        <div>
+            {username ?
+                <TextField label="Generated Username"
+                           InputProps={{readOnly: true,}}
+                           value={username} margin={"normal"}/>
+                : ""}
+        </div>
+        <div>
+            {pass ?
+                <TextField label="Generated Password"
+                           InputProps={{readOnly: true,}}
+                           value={pass} margin={"normal"}/>
+                : ""}
+        </div>
     </div>;
 }
 

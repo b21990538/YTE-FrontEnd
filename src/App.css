@@ -21,6 +21,7 @@ body {
     flex-direction: row;
     justify-content: left;
     background-color: #8d772e;
+    align-items: center;
 }
 
 .navbar-logo {
@@ -63,20 +64,4 @@ body {
 
 .login-button {
     margin-top: 20px;
-}
-
-button {
-    background: #ffffff linear-gradient(to bottom, #ffffff, #bfbfbf);
-    border-radius: 20px;
-    color: #000000;
-    padding: 10px 20px 10px 20px;
-    text-decoration: none;
-    border-width: 0;
-    font-family: Georgia, serif;
-    font-size: large;
-}
-
-button:hover {
-    background: #fff29e linear-gradient(to bottom, #fff29e, #bfbf65);
-    text-decoration: none;
 }

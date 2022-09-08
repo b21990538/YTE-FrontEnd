@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import axios from "axios";
 import UserContext from "../context/UserContext";
+import {Button} from "@mui/material";
 
 function LogoutButton() {
 
@@ -18,11 +19,8 @@ function LogoutButton() {
         setUserData({id: -1});  // TODO logout handling
     }
 
-    return (
-        <button onClick={handleLogout} className={"logout-button"}>
-            Logout
-        </button>
-    );
+    return <Button onClick={handleLogout} variant={"contained"}
+    color={"error"}>Logout</Button>;
 }
 
 export default LogoutButton;
