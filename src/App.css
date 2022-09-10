@@ -22,6 +22,7 @@ body {
     justify-content: left;
     background-color: #8d772e;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .navbar-logo {

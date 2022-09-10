@@ -19,21 +19,11 @@ const Routes = {
         },
         {
             id: 1,
-            name: "Add User",
-            path: "/addUser"
-        },
-        {
-            id: 2,
-            name: "List Users",
+            name: "Users",
             path: "/listUsers"
         },
         {
-            id: 3,
-            name: "Add Course",
-            path: "/addCourse"
-        },
-        {
-            id: 4,
+            id: 2,
             name: "Courses",
             path: "/courses"
         },

@@ -8,7 +8,7 @@ import {toast} from "react-toastify";
 const CourseTypes = [
     "REQUIRED",
     "ELECTIVE"
-]
+];
 
 function CourseAdd() {
 
@@ -40,7 +40,7 @@ function CourseAdd() {
     }
 
     function handleAddCourse() {
-        axios.post("/addCourse", {
+        axios.post("/courses", {
             name: name,
             description: desc,
             type: type,

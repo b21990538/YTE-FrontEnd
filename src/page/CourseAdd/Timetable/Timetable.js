@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TableDragSelect from "react-table-drag-select";
 import {Button} from "@mui/material";
 
@@ -14,14 +14,14 @@ const startCellState = [
     [false, false, false, false, false, false]
 ];
 
-function Timetable({setSlots}) {
+function Timetable({setSlots, startState =[]}) {
 
     const [cells, setCells] = useState(startCellState);
 
     function handleChange(newCells) {
         let slots = [];
         for (let i = 1; i < 6; i++) {
-            for (let j = 1; j < 8; j++) {
+            for (let j = 1; j < 9; j++) {
                 if (newCells[j][i]) {
                     slots.push({
                         day: i,
@@ -37,6 +37,12 @@ function Timetable({setSlots}) {
     function handleReset() {
         setCells(startCellState);
     }
+
+    useEffect(() => {
+        if (startState.length > 0) {
+            setCells(startState);
+        }
+    }, [startState])
 
     return <div>
         <TableDragSelect value={cells} onChange={handleChange}>
@@ -118,3 +124,4 @@ function Timetable({setSlots}) {
 }
 
 export default Timetable;
+export {startCellState};

@@ -13,7 +13,7 @@ const columns = [
 ];
 
 
-function ListUsers({users, setRows}) {
+function UserGrid({users, setRows}) {
     return <Box sx={{width: '100%'}}>
         <DataGrid
             autoHeight
@@ -40,4 +40,4 @@ function ListUsers({users, setRows}) {
     </Box>;
 }
 
-export default ListUsers;
+export default UserGrid;
