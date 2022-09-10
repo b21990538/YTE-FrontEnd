@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import Timetable from "./Timetable/Timetable";
 import {Autocomplete, Button, TextField} from "@mui/material";
 import TypeSelector from "../../component/TypeSelector";
+import axios from "axios";
+import {toast} from "react-toastify";
 
 const CourseTypes = [
     "REQUIRED",
@@ -38,7 +40,22 @@ function CourseAdd() {
     }
 
     function handleAddCourse() {
-        // TODO
+        axios.post("/addCourse", {
+            name: name,
+            description: desc,
+            type: type,
+            code: code,
+            timeSlots: timeSlots,
+            room: room,
+            lectUsername: lecturer
+        })
+            .then((response) => {
+                toast(response.data.message);
+            })
+            .catch((error) => {
+                console.log(error);
+                toast(error.data.message);
+            })
     }
 
     return <div className={"courseAdd-main"}>

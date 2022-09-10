@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import TypeSelector from "../component/TypeSelector";
+import TypeSelector from "../../component/TypeSelector";
 import axios from "axios";
 import {toast} from "react-toastify";
-import TypeList from "../values/TypeList";
+import TypeList from "../../values/TypeList";
 import {Button, TextField} from "@mui/material";
 
 function AdminAddUser() {

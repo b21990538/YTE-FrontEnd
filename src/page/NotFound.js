@@ -3,7 +3,7 @@ import React from 'react';
 function NotFound() {
     return (
         <div>
-            Page not found or you are not permitted
+            <h2>Page not found or you are not permitted</h2>
         </div>
     );
 }

@@ -5,9 +5,11 @@ import axios from "axios";
 function AdminListUsers() {
 
     const [users, setUsers] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
+    console.log(selectedRows);
 
     useEffect(() => {
-        fetchStudents();
+        fetchStudents().then();
     }, []);
 
     async function fetchStudents() {
@@ -17,7 +19,7 @@ function AdminListUsers() {
 
     return (
         <div>
-            <ListUsers users={users}/>
+            <ListUsers users={users} setRows={setSelectedRows}/>
         </div>
     );
 }

@@ -19,8 +19,19 @@ function Timetable({setSlots}) {
     const [cells, setCells] = useState(startCellState);
 
     function handleChange(newCells) {
+        let slots = [];
+        for (let i = 1; i < 6; i++) {
+            for (let j = 1; j < 8; j++) {
+                if (newCells[j][i]) {
+                    slots.push({
+                        day: i,
+                        slot: j
+                    });
+                }
+            }
+        }
         setCells(newCells);
-        // TODO set slots
+        setSlots(slots);
     }
 
     function handleReset() {

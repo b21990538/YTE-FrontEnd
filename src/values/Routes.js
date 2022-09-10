@@ -32,12 +32,35 @@ const Routes = {
             name: "Add Course",
             path: "/addCourse"
         },
+        {
+            id: 4,
+            name: "Courses",
+            path: "/courses"
+        },
     ],
     ASSISTANT: [
-
+        {
+            id: 0,
+            name: "Home",
+            path: "/"
+        },
+        {
+            id: 1,
+            name: "Courses",
+            path: "/courses"
+        },
     ],
     LECTURER: [
-
+        {
+            id: 0,
+            name: "Home",
+            path: "/"
+        },
+        {
+            id: 1,
+            name: "Courses",
+            path: "/courses"
+        },
     ],
 }
 
