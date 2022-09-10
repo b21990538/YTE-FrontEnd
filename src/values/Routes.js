@@ -10,6 +10,11 @@ const Routes = {
             name: "Courses",
             path: "/courses"
         },
+        {
+            id: 2,
+            name: "My Courses",
+            path: "/my-courses"
+        },
     ],
     ADMIN: [
         {
@@ -20,7 +25,7 @@ const Routes = {
         {
             id: 1,
             name: "Users",
-            path: "/listUsers"
+            path: "/users"
         },
         {
             id: 2,
@@ -39,6 +44,11 @@ const Routes = {
             name: "Courses",
             path: "/courses"
         },
+        {
+            id: 2,
+            name: "My Courses",
+            path: "/my-courses"
+        },
     ],
     LECTURER: [
         {
@@ -50,6 +60,11 @@ const Routes = {
             id: 1,
             name: "Courses",
             path: "/courses"
+        },
+        {
+            id: 2,
+            name: "My Courses",
+            path: "/my-courses"
         },
     ],
 }

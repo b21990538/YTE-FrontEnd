@@ -82,8 +82,8 @@ function ListCoursesPage() {
                    close={() => setAddDialogOpen(false)}
                    submit={handleAdd}/>
         <EditCourse isOpen={isEditDialogOpen}
-                   close={() => setEditDialogOpen(false)}
-                   submit={handleEdit} id={editId}/>
+                    close={() => setEditDialogOpen(false)}
+                    submit={handleEdit} id={editId}/>
     </div>;
 }
 

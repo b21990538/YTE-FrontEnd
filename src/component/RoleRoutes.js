@@ -5,6 +5,7 @@ import UserContext from "../context/UserContext";
 import ListCoursesPage from "../page/ListCourses/ListCoursesPage";
 import AdminListUsersPage from "../page/AdminListUsers/AdminListUsersPage";
 import NotFound from "../page/NotFound";
+import MyCoursesPage from "../page/MyCourses/MyCoursesPage";
 
 function RoleRoutes() {
 
@@ -15,6 +16,7 @@ function RoleRoutes() {
         return <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/courses" element={<ListCoursesPage/>}/>
+            <Route path="/my-courses" element={<MyCoursesPage/>}/>
             <Route path="/*" element={<NotFound/>}/>
         </Routes>;
     }
@@ -22,7 +24,7 @@ function RoleRoutes() {
     if (role === "ADMIN") {
         return <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/listUsers" element={<AdminListUsersPage/>}/>
+            <Route path="/users" element={<AdminListUsersPage/>}/>
             <Route path="/courses" element={<ListCoursesPage/>}/>
             <Route path="/*" element={<NotFound/>}/>
         </Routes>;
@@ -32,6 +34,7 @@ function RoleRoutes() {
         return <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/courses" element={<ListCoursesPage/>}/>
+            <Route path="/my-courses" element={<MyCoursesPage/>}/>
             <Route path="/*" element={<NotFound/>}/>
         </Routes>;
     }
@@ -40,6 +43,7 @@ function RoleRoutes() {
     return <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/courses" element={<ListCoursesPage/>}/>
+        <Route path="/my-courses" element={<MyCoursesPage/>}/>
         <Route path="/*" element={<NotFound/>}/>
     </Routes>;
 }
