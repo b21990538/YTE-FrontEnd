@@ -22,7 +22,7 @@ function ListCoursesPage() {
         setCourses(response.data);
     }
 
-    async function handleDelete() { //TODO multiple deletes, refresh list?
+    async function handleDelete() { //TODO multiple deletes
         if (selectedIds.length < 1) {
             toast.warn("No course selected");
             return;

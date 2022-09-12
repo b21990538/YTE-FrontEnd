@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import Timetable from "./Timetable";
 import TypeSelector from "../../component/TypeSelector";
+import axios from "axios";
 
 const CourseTypes = [
     "REQUIRED",
@@ -24,17 +25,26 @@ function AddCourse({isOpen, close, submit}) {
         setFormState(newState);
     }
 
-    function handleLectAutocomplete(event) {
-        onFormChange(event);
-        if (event.target.value === "") {
+    async function handleLectAutocomplete(event, newValue) {
+        const newState = {...formState};
+        newState.lectUsername = newValue;
+        setFormState(newState);
+
+        if (newValue === "") {
             return;
         }
         const now = Date.now();
         if (now - lastCallTime < 400) {
             return;
         }
-        // TODO get lecturer options
         lastCallTime = now;
+        try {
+            const response = await axios.get(`/auto-lecturer/${newValue}`);
+            setLectOptions(response.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     function prepareAndSubmit() {
@@ -46,7 +56,7 @@ function AddCourse({isOpen, close, submit}) {
     return <Dialog open={isOpen} fullWidth maxWidth={"lg"}>
         <DialogTitle>Add Course</DialogTitle>
         <DialogContent>
-            <Timetable setSlots={setTimeSlots} ></Timetable>
+            <Timetable setSlots={setTimeSlots}></Timetable>
             <TextField label="Name" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"}
                        name={"name"}/>
@@ -61,11 +71,11 @@ function AddCourse({isOpen, close, submit}) {
             <Autocomplete
                 freeSolo
                 options={lectOptions}
+                onInputChange={handleLectAutocomplete}
                 renderInput={(params) =>
                     <TextField {...params} fullWidth
                                label="Lecturer Username"
-                               margin={"normal"} name={"lectUsername"}
-                               onChange={handleLectAutocomplete}/>}/>
+                               margin={"normal"} />}/>
             <TextField label="Course Description" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"} multiline
                        name={"description"}/>

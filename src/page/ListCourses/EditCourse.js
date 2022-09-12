@@ -11,7 +11,7 @@ const CourseTypes = [
 let lastCallTime = Date.now();
 
 function EditCourse({isOpen, close, submit, id}) {
-
+    //TODO room autocomplete, button visibilities
     const [formState, setFormState] = useState({
         name : "",
         code : "",
@@ -67,17 +67,26 @@ function EditCourse({isOpen, close, submit, id}) {
         setFormState(newState);
     }
 
-    function handleLectAutocomplete(event) {
-        onFormChange(event);
-        if (event.target.value === "") {
+    async function handleLectAutocomplete(event, newValue) {
+        const newState = {...formState};
+        newState.lectUsername = newValue;
+        setFormState(newState);
+
+        if (newValue === "") {
             return;
         }
         const now = Date.now();
         if (now - lastCallTime < 400) {
             return;
         }
-        // TODO get lecturer options
         lastCallTime = now;
+        try {
+            const response = await axios.get(`/auto-lecturer/${newValue}`);
+            setLectOptions(response.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     function prepareAndSubmit() {
@@ -104,11 +113,11 @@ function EditCourse({isOpen, close, submit, id}) {
             <Autocomplete
                 freeSolo
                 options={lectOptions} value={formState.lectUsername}
+                onInputChange={handleLectAutocomplete}
                 renderInput={(params) =>
                     <TextField {...params} fullWidth
                                label="Lecturer Username"
-                               margin={"normal"} name={"lectUsername"}
-                               onChange={handleLectAutocomplete}/>}/>
+                               margin={"normal"}/>}/>
             <TextField label="Course Description" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"} multiline
                        name={"description"} value={formState.description}/>

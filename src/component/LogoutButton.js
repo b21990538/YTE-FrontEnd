@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import axios from "axios";
 import UserContext from "../context/UserContext";
 import {Button} from "@mui/material";
+import {toast} from "react-toastify";
 
 function LogoutButton() {
 
@@ -9,13 +10,13 @@ function LogoutButton() {
 
     function handleLogout() {
         axios.post("/logout")
-            .then(response => {
-                console.log(response);
+            .then(() => {
+                toast.success("Logged out");
             })
             .catch(error => {
                 console.log(error);
             })
-        setUserData({id: -1});  // TODO logout handling
+        setUserData({id: -1, username: "", authorities:[]});
     }
 
     return <Button onClick={handleLogout} variant={"contained"}

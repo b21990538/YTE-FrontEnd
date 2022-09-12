@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import Timetable from "../ListCourses/Timetable";
-import TypeSelector from "../../component/TypeSelector";
+import axios from "axios";
 
 let lastCallTime = Date.now();
 function AddAssistant({isOpen, close, submit}) {
@@ -9,25 +8,26 @@ function AddAssistant({isOpen, close, submit}) {
     const [formState, setFormState] = useState({});
     const [assistOptions, setAssistOptions] = useState([]);
 
-    function onFormChange(event) {
-        const name = event.target.name;
-        const value = event.target.value;
+    async function handleAssistAutocomplete(event, newValue) {
         const newState = {...formState};
-        newState[name] = value;
+        newState.assistantUsername = newValue;
         setFormState(newState);
-    }
 
-    function handleAssistAutocomplete(event) {
-        onFormChange(event);
-        if (event.target.value === "") {
+        if (newValue === "") {
             return;
         }
         const now = Date.now();
         if (now - lastCallTime < 400) {
             return;
         }
-        // TODO get assistant options
         lastCallTime = now;
+        try {
+            const response = await axios.get(`/auto-assistant/${newValue}`);
+            setAssistOptions(response.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     function prepareAndSubmit() {
@@ -40,11 +40,11 @@ function AddAssistant({isOpen, close, submit}) {
             <Autocomplete
                 freeSolo
                 options={assistOptions}
+                onInputChange={handleAssistAutocomplete}
                 renderInput={(params) =>
                     <TextField {...params} fullWidth
                                label="Assistant Username"
-                               margin={"normal"} name={"assistantUsername"}
-                               onChange={handleAssistAutocomplete}/>}/>
+                               margin={"normal"}/>}/>
         </DialogContent>
         <DialogActions>
             <Button onClick={() => close()} color="secondary">Cancel</Button>
