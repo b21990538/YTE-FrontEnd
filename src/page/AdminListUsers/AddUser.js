@@ -23,9 +23,14 @@ function AddUser({isOpen, close}) {
 
     async function prepareAndSubmit() {
         formState.type = type;
-        const response = await axios.post("/addUser", formState);
-        setUsername(response.data.username);
-        setPass(response.data.password);
+        try {
+            const response = await axios.post("/addUser", formState);
+            setUsername(response.data.username);
+            setPass(response.data.password);
+        }
+        catch (error) {
+            toast.error(error.response.data.message);
+        }
     }
 
     return <Dialog open={isOpen} fullWidth maxWidth={"md"}>

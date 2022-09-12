@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import axios from "axios";
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import UserContext from "../../context/UserContext";
 import {useNavigate} from "react-router-dom";
 import {Button, TextField} from "@mui/material";
@@ -12,20 +12,18 @@ function Login() {
     const {setUserData} = useContext(UserContext);
     const navigate = useNavigate();
 
-    function handleLogin() {
-        axios.post("/login", {
-            username: username,
-            password: password
-            })
-            .then((response) => {
-                localStorage.setItem("user_data", JSON.stringify(response.data));  // TODO get info from server about user roles, id...
-                setUserData(response.data);
-                navigate("/");
-            })
-            .catch((error) => {
-                console.log(error);         // TODO error print
-                toast.warn(error.response.data);
-            })
+    async function handleLogin() {
+        try {
+            const response = await axios.post("/login", {
+                username: username,
+                password: password
+            });
+            setUserData(response.data);
+            navigate("/");
+        }
+        catch (error) {
+            toast.error(error.response.data.message);
+        }
     }
 
     return <div className="login-main">

@@ -12,11 +12,10 @@ function AppWrapper() {
     useEffect(() => {
         axios.get("/sessionValid")
             .then(response => {
-                //setUserData(JSON.parse(localStorage.getItem("user_data")));   // TODO stop using localstorage
                 setUserData(response.data);
             })
             .catch(error => {
-                localStorage.removeItem("user_data");
+
             })
     }, []);
 

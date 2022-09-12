@@ -56,6 +56,7 @@ function EditCourse({isOpen, close, submit, id}) {
             cellState[timeSlot.slot][timeSlot.day] = true;
         }
         setStartState(cellState);
+        setTimeSlots(response.data.timeSlots);
     }
 
     function onFormChange(event) {

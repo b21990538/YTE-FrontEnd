@@ -15,7 +15,6 @@ function LogoutButton() {
             .catch(error => {
                 console.log(error);
             })
-        localStorage.removeItem("user_data");
         setUserData({id: -1});  // TODO logout handling
     }
 
