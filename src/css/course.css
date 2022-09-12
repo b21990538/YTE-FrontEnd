@@ -1,6 +1,7 @@
-.courseAdd-main {
+.coursePage-main {
     display: flex;
     flex-direction: column;
+    padding: 0 15px;
 }
 
 .courseAdd-div {

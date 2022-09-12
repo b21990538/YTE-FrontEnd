@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import Timetable from "../CourseAdd/Timetable/Timetable";
+import Timetable from "./Timetable";
 import TypeSelector from "../../component/TypeSelector";
 
 const CourseTypes = [

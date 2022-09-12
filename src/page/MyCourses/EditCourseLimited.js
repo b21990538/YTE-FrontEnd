@@ -1,27 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import Timetable from "./Timetable";
-import TypeSelector from "../../component/TypeSelector";
 import axios from "axios";
+import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
+import Timetable from "../ListCourses/Timetable";
+import TypeSelector from "../../component/TypeSelector";
 
-const CourseTypes = [
-    "REQUIRED",
-    "ELECTIVE"
-];
-let lastCallTime = Date.now();
-
-function EditCourse({isOpen, close, submit, id}) {
+function EditCourseLimited({isOpen, close, submit, id}) {
 
     const [formState, setFormState] = useState({
-        name : "",
-        code : "",
         room : "",
-        lectUsername : "",
         description : "",
     });
-    const [type, setType] = useState("REQUIRED");
     const [timeSlots, setTimeSlots] = useState([{}]);
-    const [lectOptions, setLectOptions] = useState([]);
     const [startState, setStartState] = useState([]);
 
     useEffect(() => {
@@ -32,13 +21,8 @@ function EditCourse({isOpen, close, submit, id}) {
 
     async function fetchCourse() {
         const response = await axios.get(`/courses/${id}`);
-        formState.name = response.data.name;
-        formState.code = response.data.code;
         formState.room = response.data.room;
-        formState.lectUsername = response.data.lectUsername;
         formState.description = response.data.description;
-
-        setType(response.data.type);
 
         let cellState = [
             [false, false, false, false, false, false],
@@ -66,22 +50,8 @@ function EditCourse({isOpen, close, submit, id}) {
         setFormState(newState);
     }
 
-    function handleLectAutocomplete(event) {
-        onFormChange(event);
-        if (event.target.value === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        // TODO get lecturer options
-        lastCallTime = now;
-    }
-
     function prepareAndSubmit() {
         formState.timeSlots = timeSlots;
-        formState.type = type;
         submit(formState);
     }
 
@@ -89,25 +59,9 @@ function EditCourse({isOpen, close, submit, id}) {
         <DialogTitle>Edit Course ID: {id}</DialogTitle>
         <DialogContent>
             <Timetable setSlots={setTimeSlots} startState={startState}></Timetable>
-            <TextField label="Name" variant="outlined" fullWidth
-                       onChange={onFormChange} margin={"normal"}
-                       name={"name"} value={formState.name}/>
-            <TypeSelector setType={setType}
-                          value={type} options={CourseTypes}/>
-            <TextField label="Course Code" variant="outlined" fullWidth
-                       onChange={onFormChange} margin={"normal"}
-                       name={"code"} value={formState.code}/>
             <TextField label="Room" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"}
                        name={"room"} value={formState.room}/>
-            <Autocomplete
-                freeSolo
-                options={lectOptions} value={formState.lectUsername}
-                renderInput={(params) =>
-                    <TextField {...params} fullWidth
-                               label="Lecturer Username"
-                               margin={"normal"} name={"lectUsername"}
-                               onChange={handleLectAutocomplete}/>}/>
             <TextField label="Course Description" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"} multiline
                        name={"description"} value={formState.description}/>
@@ -119,4 +73,4 @@ function EditCourse({isOpen, close, submit, id}) {
     </Dialog>;
 }
 
-export default EditCourse;
+export default EditCourseLimited;

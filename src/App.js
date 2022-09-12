@@ -2,7 +2,7 @@ import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-table-drag-select/style.css';
 import './css/table-drag.css'
-import './css/course-add.css'
+import './css/course.css'
 import {BrowserRouter as Router} from "react-router-dom";
 import AppWrapper from "./component/AppWrapper";
 import UserContext from "./context/UserContext";
@@ -19,7 +19,7 @@ const darkTheme = createTheme({
 
 function App() {
 
-    const [userData, setUserData] = useState({id: -1});
+    const [userData, setUserData] = useState({id: -1, username: "", authorities:[]});
 
     const userContextData = {
         userData,
