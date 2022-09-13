@@ -2,16 +2,19 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import Timetable from "../ListCourses/Timetable";
-import TypeSelector from "../../component/TypeSelector";
+import {toast} from "react-toastify";
+
+let lastCallTime = Date.now();
 
 function EditCourseLimited({isOpen, close, submit, id}) {
 
     const [formState, setFormState] = useState({
-        room : "",
-        description : "",
+        room: "",
+        description: "",
     });
-    const [timeSlots, setTimeSlots] = useState([{}]);
+    const [timeSlots, setTimeSlots] = useState([]);
     const [startState, setStartState] = useState([]);
+    const [roomOptions, setRoomOptions] = useState([]);
 
     useEffect(() => {
         if (isOpen) {
@@ -20,26 +23,31 @@ function EditCourseLimited({isOpen, close, submit, id}) {
     }, [isOpen]);
 
     async function fetchCourse() {
-        const response = await axios.get(`/courses/${id}`);
-        formState.room = response.data.room;
-        formState.description = response.data.description;
+        try {
+            const response = await axios.get(`/courses/${id}`);
+            formState.room = response.data.room;
+            formState.description = response.data.description;
 
-        let cellState = [
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false]
-        ];
+            let cellState = [
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false]
+            ];
 
-        for (const timeSlot of response.data.timeSlots) {
-            cellState[timeSlot.slot][timeSlot.day] = true;
+            for (const timeSlot of response.data.timeSlots) {
+                cellState[timeSlot.slot][timeSlot.day] = true;
+            }
+            setStartState(cellState);
+            setTimeSlots(response.data.timeSlots);
+        } catch (error) {
+            toast.error(error.response.data.message);
         }
-        setStartState(cellState);
     }
 
     function onFormChange(event) {
@@ -48,6 +56,27 @@ function EditCourseLimited({isOpen, close, submit, id}) {
         const newState = {...formState};
         newState[name] = value;
         setFormState(newState);
+    }
+
+    async function handleRoomAutocomplete(event, newValue) {
+        const newState = {...formState};
+        newState.room = newValue;
+        setFormState(newState);
+
+        if (newValue === "") {
+            return;
+        }
+        const now = Date.now();
+        if (now - lastCallTime < 400) {
+            return;
+        }
+        lastCallTime = now;
+        try {
+            const response = await axios.get(`/auto-room/${newValue}`);
+            setRoomOptions(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     function prepareAndSubmit() {
@@ -59,9 +88,14 @@ function EditCourseLimited({isOpen, close, submit, id}) {
         <DialogTitle>Edit Course ID: {id}</DialogTitle>
         <DialogContent>
             <Timetable setSlots={setTimeSlots} startState={startState}></Timetable>
-            <TextField label="Room" variant="outlined" fullWidth
-                       onChange={onFormChange} margin={"normal"}
-                       name={"room"} value={formState.room}/>
+            <Autocomplete
+                freeSolo
+                options={roomOptions} value={formState.room}
+                onInputChange={handleRoomAutocomplete}
+                renderInput={(params) =>
+                    <TextField {...params} fullWidth
+                               label="Room"
+                               margin={"normal"}/>}/>
             <TextField label="Course Description" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"} multiline
                        name={"description"} value={formState.description}/>

@@ -14,8 +14,9 @@ function AddCourse({isOpen, close, submit}) {
 
     const [formState, setFormState] = useState({});
     const [type, setType] = useState("REQUIRED");
-    const [timeSlots, setTimeSlots] = useState([{}]);
+    const [timeSlots, setTimeSlots] = useState([]);
     const [lectOptions, setLectOptions] = useState([]);
+    const [roomOptions, setRoomOptions] = useState([]);
 
     function onFormChange(event) {
         const name = event.target.name;
@@ -47,10 +48,39 @@ function AddCourse({isOpen, close, submit}) {
         }
     }
 
+    async function handleRoomAutocomplete(event, newValue) {
+        const newState = {...formState};
+        newState.room = newValue;
+        setFormState(newState);
+
+        if (newValue === "") {
+            return;
+        }
+        const now = Date.now();
+        if (now - lastCallTime < 400) {
+            return;
+        }
+        lastCallTime = now;
+        try {
+            const response = await axios.get(`/auto-room/${newValue}`);
+            setRoomOptions(response.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     function prepareAndSubmit() {
         formState.timeSlots = timeSlots;
         formState.type = type;
         submit(formState);
+    }
+
+    function resetStateAndClose() {
+        setFormState({});
+        setType("REQUIRED");
+        setTimeSlots([]);
+        close();
     }
 
     return <Dialog open={isOpen} fullWidth maxWidth={"lg"}>
@@ -65,9 +95,14 @@ function AddCourse({isOpen, close, submit}) {
             <TextField label="Course Code" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"}
                        name={"code"}/>
-            <TextField label="Room" variant="outlined" fullWidth
-                       onChange={onFormChange} margin={"normal"}
-                       name={"room"}/>
+            <Autocomplete
+                freeSolo
+                options={roomOptions}
+                onInputChange={handleRoomAutocomplete}
+                renderInput={(params) =>
+                    <TextField {...params} fullWidth
+                               label="Room"
+                               margin={"normal"} />}/>
             <Autocomplete
                 freeSolo
                 options={lectOptions}
@@ -81,7 +116,7 @@ function AddCourse({isOpen, close, submit}) {
                        name={"description"}/>
         </DialogContent>
         <DialogActions>
-            <Button onClick={() => close()} color="secondary">Cancel</Button>
+            <Button onClick={resetStateAndClose} color="secondary">Cancel</Button>
             <Button onClick={prepareAndSubmit}>Submit</Button>
         </DialogActions>
     </Dialog>;

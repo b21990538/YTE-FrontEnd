@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import CourseTimetable from "./CourseTimetable";
 import axios from "axios";
+import {toast} from "react-toastify";
 
 function CoursePage() {
 
@@ -13,7 +14,7 @@ function CoursePage() {
         description: "",
         lecturerName: "",
         lecturerSurname: "",
-        assistants: [{name: "", surname: "", id:0}],
+        assistants: [{name: "", surname: "", id: 0}],
     });
     const [cellState, setcellState] = useState([
         [false, false, false, false, false, false],
@@ -33,25 +34,29 @@ function CoursePage() {
     }, []);
 
     async function fetchCourse() {
-        const response = await axios.get(`/course-page/${courseId}`);
+        try {
+            const response = await axios.get(`/course-page/${courseId}`);
 
-        let cellState = [
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false]
-        ];
+            let cellState = [
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false],
+                [false, false, false, false, false, false]
+            ];
 
-        for (const timeSlot of response.data.timeSlots) {
-            cellState[timeSlot.slot][timeSlot.day] = true;
+            for (const timeSlot of response.data.timeSlots) {
+                cellState[timeSlot.slot][timeSlot.day] = true;
+            }
+            setcellState(cellState);
+            setCourse(response.data);
+        } catch (error) {
+            toast.error(error.response.data.message);
         }
-        setcellState(cellState);
-        setCourse(response.data);
     }
 
     return <div className={"coursePage-main"}>
@@ -59,7 +64,7 @@ function CoursePage() {
         <div>Room: {course.room}</div>
         <div>Lecturer: {course.lecturerName} {course.lecturerSurname}</div>
         <div>Assistants</div>
-        {course.assistants.map((item)=> {
+        {course.assistants.map((item) => {
             return <div key={item.id}>{item.name} {item.surname}</div>;
         })}
         <p>Description: {course.description}</p>

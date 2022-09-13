@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import UserGrid from "./UserGrid";
 import axios from "axios";
 import {Box, Button, Grid} from "@mui/material";
-import CourseGrid from "../ListCourses/CouseGrid";
-import AddCourse from "../ListCourses/AddCourse";
-import EditCourse from "../ListCourses/EditCourse";
 import AddUser from "./AddUser";
+import {toast} from "react-toastify";
+import UserContext from "../../context/UserContext";
 
 function AdminListUsersPage() {
 
@@ -18,8 +17,13 @@ function AdminListUsersPage() {
     }, []);
 
     async function fetchUsers() {
-        const response = await axios.get("/getUsers");
-        setUsers(response.data);
+        try {
+            const response = await axios.get("/getUsers");
+            setUsers(response.data);
+        }
+        catch (error) {
+            toast.error(error.response.data.message);
+        }
     }
 
     return <div>

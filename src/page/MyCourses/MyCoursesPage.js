@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Grid} from "@mui/material";
 import CourseGrid from "../ListCourses/CouseGrid";
 import axios from "axios";
@@ -6,6 +6,7 @@ import AddAssistant from "./AddAssistant";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import EditCourseLimited from "./EditCourseLimited";
+import UserContext from "../../context/UserContext";
 
 function MyCoursesPage() {
 
@@ -14,7 +15,10 @@ function MyCoursesPage() {
     const [isAddAssistOpen, setAddAssistOpen] = useState(false);
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
     const [editId, setEditId] = useState(0);
+
     const navigate = useNavigate();
+    const {userData} = useContext(UserContext);
+    const role = userData.authorities[0];
 
     useEffect(() => {
         fetchCourses().then();
@@ -64,6 +68,21 @@ function MyCoursesPage() {
         await fetchCourses();
     }
 
+    let addAssistantButton = <div/>;
+    let editCourseButton = <div/>;
+    if (role === "LECTURER") {
+        addAssistantButton = <Grid item xs={2}>
+            <Button variant={"outlined"} fullWidth
+                    onClick={openAddAssistant}>Add Assistant</Button>
+        </Grid>;
+    }
+    if (role === "LECTURER" || role === "ASSISTANT") {
+        editCourseButton = <Grid item xs={2}>
+            <Button variant={"outlined"} fullWidth
+                    onClick={openEditDialog}>Edit</Button>
+        </Grid>;
+    }
+
     return <div>
         <Box sx={{flexGrow: 1}}>
             <Grid container spacing={2}>
@@ -71,14 +90,8 @@ function MyCoursesPage() {
                     <Button variant={"outlined"} fullWidth
                             onClick={handleGotoCourse}>Course Page</Button>
                 </Grid>
-                <Grid item xs={2}>
-                    <Button variant={"outlined"} fullWidth
-                            onClick={openAddAssistant}>Add Assistant</Button>
-                </Grid>
-                <Grid item xs={2}>
-                    <Button variant={"outlined"} fullWidth
-                            onClick={openEditDialog}>Edit</Button>
-                </Grid>
+                {addAssistantButton}
+                {editCourseButton}
                 <Grid item xs={2}>
                     <Button variant={"outlined"} fullWidth color={"secondary"}
                             onClick={fetchCourses}>Refresh</Button>

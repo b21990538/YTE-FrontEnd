@@ -19,8 +19,8 @@ function UserGrid({users, setRows}) {
             autoHeight
             rows={users}
             columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
             checkboxSelection
             disableSelectionOnClick
             onSelectionModelChange={(selectionModel) => {

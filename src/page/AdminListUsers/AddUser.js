@@ -33,6 +33,14 @@ function AddUser({isOpen, close}) {
         }
     }
 
+    function resetStateAndClose() {
+        setFormState({});
+        setType("STUDENT");
+        setUsername(null);
+        setPass(null);
+        close();
+    }
+
     return <Dialog open={isOpen} fullWidth maxWidth={"md"}>
         <DialogTitle>Add User</DialogTitle>
         <DialogContent>
@@ -63,7 +71,7 @@ function AddUser({isOpen, close}) {
             </div>
         </DialogContent>
         <DialogActions>
-            <Button onClick={() => close()} color="secondary">Close</Button>
+            <Button onClick={resetStateAndClose} color="secondary">Close</Button>
             <Button onClick={prepareAndSubmit}>Submit</Button>
         </DialogActions>
     </Dialog>;

@@ -11,7 +11,7 @@ const CourseTypes = [
 let lastCallTime = Date.now();
 
 function EditCourse({isOpen, close, submit, id}) {
-    //TODO room autocomplete, button visibilities
+
     const [formState, setFormState] = useState({
         name : "",
         code : "",
@@ -20,8 +20,9 @@ function EditCourse({isOpen, close, submit, id}) {
         description : "",
     });
     const [type, setType] = useState("REQUIRED");
-    const [timeSlots, setTimeSlots] = useState([{}]);
+    const [timeSlots, setTimeSlots] = useState([]);
     const [lectOptions, setLectOptions] = useState([]);
+    const [roomOptions, setRoomOptions] = useState([]);
     const [startState, setStartState] = useState([]);
 
     useEffect(() => {
@@ -89,6 +90,28 @@ function EditCourse({isOpen, close, submit, id}) {
         }
     }
 
+    async function handleRoomAutocomplete(event, newValue) {
+        const newState = {...formState};
+        newState.room = newValue;
+        setFormState(newState);
+
+        if (newValue === "") {
+            return;
+        }
+        const now = Date.now();
+        if (now - lastCallTime < 400) {
+            return;
+        }
+        lastCallTime = now;
+        try {
+            const response = await axios.get(`/auto-room/${newValue}`);
+            setRoomOptions(response.data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     function prepareAndSubmit() {
         formState.timeSlots = timeSlots;
         formState.type = type;
@@ -107,9 +130,14 @@ function EditCourse({isOpen, close, submit, id}) {
             <TextField label="Course Code" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"}
                        name={"code"} value={formState.code}/>
-            <TextField label="Room" variant="outlined" fullWidth
-                       onChange={onFormChange} margin={"normal"}
-                       name={"room"} value={formState.room}/>
+            <Autocomplete
+                freeSolo
+                options={roomOptions} value={formState.room}
+                onInputChange={handleRoomAutocomplete}
+                renderInput={(params) =>
+                    <TextField {...params} fullWidth
+                               label="Room"
+                               margin={"normal"} />}/>
             <Autocomplete
                 freeSolo
                 options={lectOptions} value={formState.lectUsername}

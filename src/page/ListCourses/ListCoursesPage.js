@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import CourseGrid from "./CouseGrid";
 import {Box, Button, Grid} from "@mui/material";
 import {toast} from "react-toastify";
 import AddCourse from "./AddCourse";
 import EditCourse from "./EditCourse";
+import UserContext from "../../context/UserContext";
 
 function ListCoursesPage() {
     const [courses, setCourses] = useState([]);
@@ -13,13 +14,20 @@ function ListCoursesPage() {
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
     const [editId, setEditId] = useState(0);
 
+    const {userData} = useContext(UserContext);
+    const role = userData.authorities[0];
+
     useEffect(() => {
         fetchCourses().then();
     }, []);
 
     async function fetchCourses() {
-        const response = await axios.get("/courses");
-        setCourses(response.data);
+        try {
+            const response = await axios.get("/courses");
+            setCourses(response.data);
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
     }
 
     async function handleDelete() { //TODO multiple deletes
@@ -27,23 +35,34 @@ function ListCoursesPage() {
             toast.warn("No course selected");
             return;
         }
-        const response = await axios.delete(`/courses/${selectedIds[0]}`);
-        toast.success(response.data.message);
-        await fetchCourses();
+        try {
+            const response = await axios.delete(`/courses/${selectedIds[0]}`);
+            toast.success(response.data.message);
+            await fetchCourses();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
     }
 
     async function handleAdd(formState) {
-        const response = await axios.post("/courses", formState);
-        toast.success(response.data.message);
-        setAddDialogOpen(false);
-        await fetchCourses();
+        try {
+            const response = await axios.post("/courses", formState);
+            toast.success(response.data.message);
+            await fetchCourses();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
     }
 
     async function handleEdit(formState) {
-        const response = await axios.put(`/courses/${editId}`, formState);
-        toast.success(response.data.message);
-        setEditDialogOpen(false);
-        await fetchCourses();
+        try {
+            const response = await axios.put(`/courses/${editId}`, formState);
+            toast.success(response.data.message);
+            setEditDialogOpen(false);
+            await fetchCourses();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
     }
 
     function openEditDialog() {
@@ -55,20 +74,29 @@ function ListCoursesPage() {
         setEditDialogOpen(true);
     }
 
+    let adminAddButton = <div/>;
+    let adminEditButton = <div/>;
+    let adminDeleteButton = <div/>;
+    if (role === "ADMIN") {
+        adminAddButton = <Grid item xs={2}>
+            <Button variant={"outlined"} fullWidth
+                    onClick={() => setAddDialogOpen(true)}>Add</Button>
+        </Grid>;
+        adminEditButton = <Grid item xs={2}>
+            <Button variant={"outlined"} fullWidth
+                    onClick={openEditDialog}>Edit</Button>
+        </Grid>;
+        adminDeleteButton = <Grid item xs={2}>
+            <Button fullWidth color={"error"} variant={"outlined"} onClick={handleDelete}>Delete</Button>
+        </Grid>;
+    }
+
     return <div>
         <Box sx={{flexGrow: 1}}>
             <Grid container spacing={2}>
-                <Grid item xs={2}>
-                    <Button variant={"outlined"} fullWidth
-                            onClick={() => setAddDialogOpen(true)}>Add</Button>
-                </Grid>
-                <Grid item xs={2}>
-                    <Button variant={"outlined"} fullWidth
-                            onClick={openEditDialog}>Edit</Button>
-                </Grid>
-                <Grid item xs={2}>
-                    <Button fullWidth color={"error"} variant={"outlined"} onClick={handleDelete}>Delete</Button>
-                </Grid>
+                {adminAddButton}
+                {adminEditButton}
+                {adminDeleteButton}
                 <Grid item xs={2}>
                     <Button variant={"outlined"} fullWidth color={"secondary"}
                             onClick={fetchCourses}>Refresh</Button>
