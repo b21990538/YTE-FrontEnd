@@ -10,6 +10,8 @@ import React, {useState} from "react";
 import {ToastContainer} from "react-toastify";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
 
 const darkTheme = createTheme({
     palette: {
@@ -29,9 +31,11 @@ function App() {
     return <Router>
         <UserContext.Provider value={userContextData}>
             <ThemeProvider theme={darkTheme}>
-                <CssBaseline/>
-                <AppWrapper/>
-                <ToastContainer/>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <CssBaseline/>
+                    <AppWrapper/>
+                    <ToastContainer/>
+                </LocalizationProvider>
             </ThemeProvider>
         </UserContext.Provider>
     </Router>;

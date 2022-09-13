@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import CourseTimetable from "./CourseTimetable";
 import axios from "axios";
 import {toast} from "react-toastify";
+import {Button, Grid} from "@mui/material";
+import UserContext from "../../context/UserContext";
+import AddExam from "./AddExam";
 
 function CoursePage() {
 
@@ -27,7 +30,12 @@ function CoursePage() {
         [false, false, false, false, false, false],
         [false, false, false, false, false, false]
     ]);
+    const [isAddExamOpen, setAddExamOpen] = useState(false);
+
+
     let {courseId} = useParams();
+    const {userData} = useContext(UserContext);
+    const role = userData.authorities[0];
 
     useEffect(() => {
         fetchCourse().then();
@@ -59,8 +67,30 @@ function CoursePage() {
         }
     }
 
+    async function handleAddExam(formState) {
+        try {
+            formState.courseId = courseId;
+            const response = await axios.post("/exams", formState);
+            toast.success(response.data.message);
+            await fetchCourse();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+
+    let addExamButton = <div/>;
+    if (role === "LECTURER" || role === "ASSISTANT") {
+        addExamButton = <Grid item xs={2}>
+            <Button variant={"outlined"} fullWidth
+                    onClick={() => setAddExamOpen(true)}>Add Exam</Button>
+        </Grid>;
+    }
+
     return <div className={"coursePage-main"}>
         <h2>{course.code}: {course.name} - {course.type}</h2>
+        <Grid container spacing={2}>
+            {addExamButton}
+        </Grid>
         <div>Room: {course.room}</div>
         <div>Lecturer: {course.lecturerName} {course.lecturerSurname}</div>
         <div>Assistants</div>
@@ -69,6 +99,9 @@ function CoursePage() {
         })}
         <p>Description: {course.description}</p>
         <CourseTimetable cellState={cellState}/>
+        <AddExam isOpen={isAddExamOpen}
+                 close={() => setAddExamOpen(false)}
+                 submit={handleAddExam}/>
     </div>;
 }
 
