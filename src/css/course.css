@@ -1,4 +1,18 @@
+.coursePage-outer {
+    display: flex;
+    flex-direction: row;
+    padding: 0 15px;
+}
+
 .coursePage-main {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+}
+
+.coursePage-side {
+    flex: 1;
     display: flex;
     flex-direction: column;
     padding: 0 15px;

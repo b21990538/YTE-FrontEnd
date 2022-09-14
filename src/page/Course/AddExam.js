@@ -45,7 +45,7 @@ function AddExam({isOpen, close, submit}) {
     }
 
     return <Dialog open={isOpen} fullWidth maxWidth={"sm"}>
-        <DialogTitle>Add Course</DialogTitle>
+        <DialogTitle>Add Exam</DialogTitle>
         <DialogContent>
             <TextField label="Name" variant="outlined" fullWidth
                        onChange={onFormChange} margin={"normal"}

@@ -74,6 +74,20 @@ function ListCoursesPage() {
         setEditDialogOpen(true);
     }
 
+    async function handleTakeCourse() {
+        if (selectedIds.length < 1) {
+            toast.warn("No course selected");
+            return;
+        }
+        try {
+            const response = await axios.post(`/take-course/${selectedIds[0]}`);
+            toast.success(response.data.message);
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+
+    let takeCourseButton = <div/>;
     let adminAddButton = <div/>;
     let adminEditButton = <div/>;
     let adminDeleteButton = <div/>;
@@ -90,10 +104,17 @@ function ListCoursesPage() {
             <Button fullWidth color={"error"} variant={"outlined"} onClick={handleDelete}>Delete</Button>
         </Grid>;
     }
+    if (role === "STUDENT") {
+        takeCourseButton = <Grid item xs={2}>
+            <Button variant={"outlined"} fullWidth
+                    onClick={handleTakeCourse}>Take Course</Button>
+        </Grid>;
+    }
 
     return <div>
         <Box sx={{flexGrow: 1}}>
             <Grid container spacing={2}>
+                {takeCourseButton}
                 {adminAddButton}
                 {adminEditButton}
                 {adminDeleteButton}

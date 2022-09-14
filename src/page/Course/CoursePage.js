@@ -6,9 +6,10 @@ import {toast} from "react-toastify";
 import {Button, Grid} from "@mui/material";
 import UserContext from "../../context/UserContext";
 import AddExam from "./AddExam";
+import AddHomework from "./AddHomework";
 
 function CoursePage() {
-
+//TODO list exams, homeworks
     const [course, setCourse] = useState({
         name: "",
         code: "",
@@ -31,7 +32,7 @@ function CoursePage() {
         [false, false, false, false, false, false]
     ]);
     const [isAddExamOpen, setAddExamOpen] = useState(false);
-
+    const [isAddHomeworkOpen, setAddHomeworkOpen] = useState(false);
 
     let {courseId} = useParams();
     const {userData} = useContext(UserContext);
@@ -78,30 +79,59 @@ function CoursePage() {
         }
     }
 
+    async function handleAddHomework(formData) {
+        try {
+            const response = await axios.post("/hw", formData,
+                {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+            toast.success(response.data.message);
+            await fetchCourse();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+
+
     let addExamButton = <div/>;
+    let addHomeworkButton = <div/>;
     if (role === "LECTURER" || role === "ASSISTANT") {
-        addExamButton = <Grid item xs={2}>
+        addExamButton = <Grid item xs={6}>
             <Button variant={"outlined"} fullWidth
                     onClick={() => setAddExamOpen(true)}>Add Exam</Button>
         </Grid>;
+        addHomeworkButton = <Grid item xs={6}>
+            <Button variant={"outlined"} fullWidth
+                    onClick={() => setAddHomeworkOpen(true)}>Add Homework</Button>
+        </Grid>;
     }
 
-    return <div className={"coursePage-main"}>
-        <h2>{course.code}: {course.name} - {course.type}</h2>
-        <Grid container spacing={2}>
-            {addExamButton}
-        </Grid>
-        <div>Room: {course.room}</div>
-        <div>Lecturer: {course.lecturerName} {course.lecturerSurname}</div>
-        <div>Assistants</div>
-        {course.assistants.map((item) => {
-            return <div key={item.id}>{item.name} {item.surname}</div>;
-        })}
-        <p>Description: {course.description}</p>
-        <CourseTimetable cellState={cellState}/>
-        <AddExam isOpen={isAddExamOpen}
-                 close={() => setAddExamOpen(false)}
-                 submit={handleAddExam}/>
+    return <div className={"coursePage-outer"}>
+        <div className={"coursePage-main"}>
+            <h2>{course.code}: {course.name} - {course.type}</h2>
+            <div>Room: {course.room}</div>
+            <div>Lecturer: {course.lecturerName} {course.lecturerSurname}</div>
+            <div>Assistants</div>
+            {course.assistants.map((item) => {
+                return <div key={item.id}>{item.name} {item.surname}</div>;
+            })}
+            <p>Description: {course.description}</p>
+            <CourseTimetable cellState={cellState}/>
+            <AddExam isOpen={isAddExamOpen}
+                     close={() => setAddExamOpen(false)}
+                     submit={handleAddExam}/>
+            <AddHomework isOpen={isAddHomeworkOpen} courseId={courseId}
+                         close={() => setAddHomeworkOpen(false)}
+                         submit={handleAddHomework}/>
+        </div>
+        <div className={"coursePage-side"}>
+            <Grid container spacing={2}>
+                {addExamButton}
+                {addHomeworkButton}
+            </Grid>
+        </div>
     </div>;
 }
 

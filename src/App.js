@@ -34,7 +34,7 @@ function App() {
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                     <CssBaseline/>
                     <AppWrapper/>
-                    <ToastContainer/>
+                    <ToastContainer theme={"dark"}/>
                 </LocalizationProvider>
             </ThemeProvider>
         </UserContext.Provider>
