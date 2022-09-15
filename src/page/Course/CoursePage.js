@@ -7,9 +7,11 @@ import {Button, Grid} from "@mui/material";
 import UserContext from "../../context/UserContext";
 import AddExam from "./AddExam";
 import AddHomework from "./AddHomework";
+import ExamList from "./List/ExamList";
+import HomeworkList from "./List/HomeworkList";
 
 function CoursePage() {
-//TODO list exams, homeworks
+
     const [course, setCourse] = useState({
         name: "",
         code: "",
@@ -18,7 +20,7 @@ function CoursePage() {
         description: "",
         lecturerName: "",
         lecturerSurname: "",
-        assistants: [{name: "", surname: "", id: 0}],
+        assistants: [],
     });
     const [cellState, setcellState] = useState([
         [false, false, false, false, false, false],
@@ -68,6 +70,7 @@ function CoursePage() {
         }
     }
 
+    //TODO refresh lists
     async function handleAddExam(formState) {
         try {
             formState.courseId = courseId;
@@ -94,7 +97,12 @@ function CoursePage() {
         }
     }
 
-
+    let examList = <Grid item xs={12}>
+        <ExamList courseId={courseId}/>
+    </Grid>;
+    let homeworkList = <Grid item xs={12}>
+        <HomeworkList courseId={courseId}/>
+    </Grid>;
     let addExamButton = <div/>;
     let addHomeworkButton = <div/>;
     if (role === "LECTURER" || role === "ASSISTANT") {
@@ -113,7 +121,7 @@ function CoursePage() {
             <h2>{course.code}: {course.name} - {course.type}</h2>
             <div>Room: {course.room}</div>
             <div>Lecturer: {course.lecturerName} {course.lecturerSurname}</div>
-            <div>Assistants</div>
+            <div>{course.assistants.length > 0 ?"Assistants:": ""}</div>
             {course.assistants.map((item) => {
                 return <div key={item.id}>{item.name} {item.surname}</div>;
             })}
@@ -130,6 +138,8 @@ function CoursePage() {
             <Grid container spacing={2}>
                 {addExamButton}
                 {addHomeworkButton}
+                {examList}
+                {homeworkList}
             </Grid>
         </div>
     </div>;

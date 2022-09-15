@@ -7,6 +7,8 @@ import AdminListUsersPage from "../page/AdminListUsers/AdminListUsersPage";
 import NotFound from "../page/NotFound";
 import MyCoursesPage from "../page/MyCourses/MyCoursesPage";
 import CoursePage from "../page/Course/CoursePage";
+import ExamPage from "../page/Exam/ExamPage";
+import HomeworkPage from "../page/Homework/HomeworkPage";
 
 function RoleRoutes() {
 
@@ -39,6 +41,8 @@ function RoleRoutes() {
             <Route path="/courses" element={<ListCoursesPage/>}/>
             <Route path="/courses/:courseId" element={<CoursePage/>}/>
             <Route path="/my-courses" element={<MyCoursesPage/>}/>
+            <Route path="/exams/:examId" element={<ExamPage/>}/>
+            <Route path="/homeworks/:homeworkId" element={<HomeworkPage/>}/>
             <Route path="/*" element={<NotFound/>}/>
         </Routes>;
     }
@@ -49,6 +53,8 @@ function RoleRoutes() {
         <Route path="/courses" element={<ListCoursesPage/>}/>
         <Route path="/courses/:courseId" element={<CoursePage/>}/>
         <Route path="/my-courses" element={<MyCoursesPage/>}/>
+        <Route path="/exams/:examId" element={<ExamPage/>}/>
+        <Route path="/homeworks/:homeworkId" element={<HomeworkPage/>}/>
         <Route path="/*" element={<NotFound/>}/>
     </Routes>;
 }
