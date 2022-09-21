@@ -11,6 +11,7 @@ import ExamList from "./List/ExamList";
 import HomeworkList from "./List/HomeworkList";
 import PrepCellsFromResponse from "../../function/PrepCellsFromResponse";
 
+let triggerUpdate = false;
 function CoursePage() {
 
     const [course, setCourse] = useState({
@@ -56,13 +57,12 @@ function CoursePage() {
         }
     }
 
-    //TODO refresh lists
     async function handleAddExam(formState) {
         try {
             formState.courseId = courseId;
             const response = await axios.post("/exams", formState);
             toast.success(response.data.message);
-            await fetchCourse();
+            triggerUpdate = !triggerUpdate;
         } catch (error) {
             toast.error(error.response.data.message);
         }
@@ -77,17 +77,17 @@ function CoursePage() {
                     }
                 });
             toast.success(response.data.message);
-            await fetchCourse();
+            triggerUpdate = !triggerUpdate;
         } catch (error) {
             toast.error(error.response.data.message);
         }
     }
 
     let examList = <Grid item xs={12}>
-        <ExamList courseId={courseId}/>
+        <ExamList courseId={courseId} triggerUpdate={triggerUpdate}/>
     </Grid>;
     let homeworkList = <Grid item xs={12}>
-        <HomeworkList courseId={courseId}/>
+        <HomeworkList courseId={courseId} triggerUpdate={triggerUpdate}/>
     </Grid>;
     let addExamButton = <div/>;
     let addHomeworkButton = <div/>;

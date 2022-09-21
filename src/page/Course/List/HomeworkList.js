@@ -3,11 +3,10 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import {List} from "@mui/material";
 import HomeworkItem from "./HomeworkItem";
-import ExamStudentItem from "./ExamStudentItem";
 import UserContext from "../../../context/UserContext";
 import HomeworkStudentItem from "./HomeworkStudentItem";
 
-function HomeworkList({courseId}) {
+function HomeworkList({courseId, triggerUpdate}) {
 
     const [homeworks, setHomeworks] = useState([]);
 
@@ -16,7 +15,7 @@ function HomeworkList({courseId}) {
 
     useEffect(() => {
         fetchHomeworks().then();
-    }, []);
+    }, [triggerUpdate]);
 
     async function fetchHomeworks() {
         try {

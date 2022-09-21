@@ -6,7 +6,7 @@ import {toast} from "react-toastify";
 import UserContext from "../../../context/UserContext";
 import ExamStudentItem from "./ExamStudentItem";
 
-function ExamList({courseId}) {
+function ExamList({courseId, triggerUpdate}) {
 
     const [exams, setExams] = useState([]);
 
@@ -15,7 +15,7 @@ function ExamList({courseId}) {
 
     useEffect(() => {
         fetchExams().then();
-    }, []);
+    }, [triggerUpdate]);
 
     async function fetchExams() {
         try {
