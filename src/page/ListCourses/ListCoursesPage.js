@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
-import CourseGrid from "./CouseGrid";
 import {Box, Button, Grid} from "@mui/material";
 import {toast} from "react-toastify";
 import AddCourse from "./AddCourse";
 import EditCourse from "./EditCourse";
 import UserContext from "../../context/UserContext";
+import MyDataGrid from "../../component/MyDataGrid";
+import {CourseColumns} from "../../values/Columns";
 
 function ListCoursesPage() {
     const [courses, setCourses] = useState([]);
@@ -123,7 +124,7 @@ function ListCoursesPage() {
                             onClick={fetchCourses}>Refresh</Button>
                 </Grid>
                 <Grid item xs={12}>
-                    <CourseGrid courses={courses} setRows={setSelectedIds}/>
+                    <MyDataGrid values={courses} setRows={setSelectedIds} columns={CourseColumns}/>
                 </Grid>
             </Grid>
         </Box>

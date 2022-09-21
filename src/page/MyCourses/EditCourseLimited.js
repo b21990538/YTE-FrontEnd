@@ -3,8 +3,8 @@ import axios from "axios";
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import Timetable from "../ListCourses/Timetable";
 import {toast} from "react-toastify";
-
-let lastCallTime = Date.now();
+import PrepCellsFromResponse from "../../function/PrepCellsFromResponse";
+import GetAutocompleteData from "../../function/GetAutocompleteData";
 
 function EditCourseLimited({isOpen, close, submit, id}) {
 
@@ -28,22 +28,7 @@ function EditCourseLimited({isOpen, close, submit, id}) {
             formState.room = response.data.room;
             formState.description = response.data.description;
 
-            let cellState = [
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false]
-            ];
-
-            for (const timeSlot of response.data.timeSlots) {
-                cellState[timeSlot.slot][timeSlot.day] = true;
-            }
-            setStartState(cellState);
+            PrepCellsFromResponse(response, setStartState);
             setTimeSlots(response.data.timeSlots);
         } catch (error) {
             toast.error(error.response.data.message);
@@ -63,20 +48,7 @@ function EditCourseLimited({isOpen, close, submit, id}) {
         newState.room = newValue;
         setFormState(newState);
 
-        if (newValue === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        lastCallTime = now;
-        try {
-            const response = await axios.get(`/auto-room/${newValue}`);
-            setRoomOptions(response.data);
-        } catch (error) {
-            console.log(error);
-        }
+        await GetAutocompleteData(newValue, setRoomOptions, "/auto-room/");
     }
 
     function prepareAndSubmit() {

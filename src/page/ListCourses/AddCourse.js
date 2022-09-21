@@ -2,13 +2,8 @@ import React, {useState} from 'react';
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import Timetable from "./Timetable";
 import TypeSelector from "../../component/TypeSelector";
-import axios from "axios";
-
-const CourseTypes = [
-    "REQUIRED",
-    "ELECTIVE"
-];
-let lastCallTime = Date.now();
+import CourseTypes from "../../values/CourseTypes";
+import GetAutocompleteData from "../../function/GetAutocompleteData";
 
 function AddCourse({isOpen, close, submit}) {
 
@@ -31,21 +26,7 @@ function AddCourse({isOpen, close, submit}) {
         newState.lectUsername = newValue;
         setFormState(newState);
 
-        if (newValue === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        lastCallTime = now;
-        try {
-            const response = await axios.get(`/auto-lecturer/${newValue}`);
-            setLectOptions(response.data);
-        }
-        catch (error) {
-            console.log(error);
-        }
+        await GetAutocompleteData(newValue, setLectOptions, "/auto-lecturer/");
     }
 
     async function handleRoomAutocomplete(event, newValue) {
@@ -53,21 +34,7 @@ function AddCourse({isOpen, close, submit}) {
         newState.room = newValue;
         setFormState(newState);
 
-        if (newValue === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        lastCallTime = now;
-        try {
-            const response = await axios.get(`/auto-room/${newValue}`);
-            setRoomOptions(response.data);
-        }
-        catch (error) {
-            console.log(error);
-        }
+        await GetAutocompleteData(newValue, setRoomOptions, "/auto-room/");
     }
 
     function prepareAndSubmit() {

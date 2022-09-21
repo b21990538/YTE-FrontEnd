@@ -14,9 +14,6 @@ function AppWrapper() {
             .then(response => {
                 setUserData(response.data);
             })
-            .catch(error => {
-
-            })
     }, []);
 
     if (userData.id < 0) {

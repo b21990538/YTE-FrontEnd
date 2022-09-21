@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
-import axios from "axios";
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-
-
-let lastCallTime = Date.now();
+import GetAutocompleteData from "../../function/GetAutocompleteData";
 
 function AddExam({isOpen, close, submit}) {
 
@@ -23,20 +20,7 @@ function AddExam({isOpen, close, submit}) {
         newState.roomName = newValue;
         setFormState(newState);
 
-        if (newValue === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        lastCallTime = now;
-        try {
-            const response = await axios.get(`/auto-room/${newValue}`);
-            setRoomOptions(response.data);
-        } catch (error) {
-            console.log(error);
-        }
+        await GetAutocompleteData(newValue, setRoomOptions, "/auto-room/");
     }
 
     function resetStateAndClose() {

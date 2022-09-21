@@ -3,12 +3,9 @@ import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle,
 import Timetable from "./Timetable";
 import TypeSelector from "../../component/TypeSelector";
 import axios from "axios";
-
-const CourseTypes = [
-    "REQUIRED",
-    "ELECTIVE"
-];
-let lastCallTime = Date.now();
+import PrepCellsFromResponse from "../../function/PrepCellsFromResponse";
+import GetAutocompleteData from "../../function/GetAutocompleteData";
+import CourseTypes from "../../values/CourseTypes";
 
 function EditCourse({isOpen, close, submit, id}) {
 
@@ -41,22 +38,7 @@ function EditCourse({isOpen, close, submit, id}) {
 
         setType(response.data.type);
 
-        let cellState = [
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false],
-            [false, false, false, false, false, false]
-        ];
-
-        for (const timeSlot of response.data.timeSlots) {
-            cellState[timeSlot.slot][timeSlot.day] = true;
-        }
-        setStartState(cellState);
+        PrepCellsFromResponse(response, setStartState);
         setTimeSlots(response.data.timeSlots);
     }
 
@@ -73,21 +55,7 @@ function EditCourse({isOpen, close, submit, id}) {
         newState.lectUsername = newValue;
         setFormState(newState);
 
-        if (newValue === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        lastCallTime = now;
-        try {
-            const response = await axios.get(`/auto-lecturer/${newValue}`);
-            setLectOptions(response.data);
-        }
-        catch (error) {
-            console.log(error);
-        }
+        await GetAutocompleteData(newValue, setLectOptions, "/auto-lecturer/");
     }
 
     async function handleRoomAutocomplete(event, newValue) {
@@ -95,21 +63,7 @@ function EditCourse({isOpen, close, submit, id}) {
         newState.room = newValue;
         setFormState(newState);
 
-        if (newValue === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        lastCallTime = now;
-        try {
-            const response = await axios.get(`/auto-room/${newValue}`);
-            setRoomOptions(response.data);
-        }
-        catch (error) {
-            console.log(error);
-        }
+        await GetAutocompleteData(newValue, setRoomOptions, "/auto-room/");
     }
 
     function prepareAndSubmit() {

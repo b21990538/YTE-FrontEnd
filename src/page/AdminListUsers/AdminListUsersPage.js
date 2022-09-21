@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react';
-import UserGrid from "./UserGrid";
+import React, {useEffect, useState} from 'react';
+import MyDataGrid from "../../component/MyDataGrid";
 import axios from "axios";
 import {Box, Button, Grid} from "@mui/material";
 import AddUser from "./AddUser";
 import {toast} from "react-toastify";
-import UserContext from "../../context/UserContext";
+import {UserColumns} from "../../values/Columns";
 
 function AdminListUsersPage() {
 
@@ -38,7 +38,7 @@ function AdminListUsersPage() {
                             onClick={fetchUsers}>Refresh</Button>
                 </Grid>
                 <Grid item xs={12}>
-                    <UserGrid users={users} setRows={setSelectedIds}/>
+                    <MyDataGrid values={users} setRows={setSelectedIds} columns={UserColumns}/>
                 </Grid>
             </Grid>
         </Box>

@@ -9,6 +9,7 @@ import AddExam from "./AddExam";
 import AddHomework from "./AddHomework";
 import ExamList from "./List/ExamList";
 import HomeworkList from "./List/HomeworkList";
+import PrepCellsFromResponse from "../../function/PrepCellsFromResponse";
 
 function CoursePage() {
 
@@ -22,7 +23,7 @@ function CoursePage() {
         lecturerSurname: "",
         assistants: [],
     });
-    const [cellState, setcellState] = useState([
+    const [cellState, setCellState] = useState([
         [false, false, false, false, false, false],
         [false, false, false, false, false, false],
         [false, false, false, false, false, false],
@@ -48,22 +49,7 @@ function CoursePage() {
         try {
             const response = await axios.get(`/course-page/${courseId}`);
 
-            let cellState = [
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false],
-                [false, false, false, false, false, false]
-            ];
-
-            for (const timeSlot of response.data.timeSlots) {
-                cellState[timeSlot.slot][timeSlot.day] = true;
-            }
-            setcellState(cellState);
+            PrepCellsFromResponse(response, setCellState);
             setCourse(response.data);
         } catch (error) {
             toast.error(error.response.data.message);

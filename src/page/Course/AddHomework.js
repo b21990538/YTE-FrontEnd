@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import axios from "axios";
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-
-let lastCallTime = Date.now();
+import GetAutocompleteData from "../../function/GetAutocompleteData";
 
 function AddHomework({isOpen, close, submit, courseId}) {
 
@@ -23,21 +21,7 @@ function AddHomework({isOpen, close, submit, courseId}) {
         newState.assistantUsername = newValue;
         setFormState(newState);
 
-        if (newValue === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        lastCallTime = now;
-        try {   // TODO assistant adding homework, different button?
-            const response = await axios.get(`/auto-assistant/${newValue}`);
-            setAssistOptions(response.data);
-        }
-        catch (error) {
-            console.log(error);
-        }
+        await GetAutocompleteData(newValue, setAssistOptions, "/auto-assistant/");
     }
 
     function handleFileSelect(event) {

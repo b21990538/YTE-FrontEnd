@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import axios from "axios";
+import GetAutocompleteData from "../../function/GetAutocompleteData";
 
-let lastCallTime = Date.now();
 function AddAssistant({isOpen, close, submit}) {
 
     const [formState, setFormState] = useState({});
@@ -13,21 +12,7 @@ function AddAssistant({isOpen, close, submit}) {
         newState.assistantUsername = newValue;
         setFormState(newState);
 
-        if (newValue === "") {
-            return;
-        }
-        const now = Date.now();
-        if (now - lastCallTime < 400) {
-            return;
-        }
-        lastCallTime = now;
-        try {
-            const response = await axios.get(`/auto-assistant/${newValue}`);
-            setAssistOptions(response.data);
-        }
-        catch (error) {
-            console.log(error);
-        }
+        await GetAutocompleteData(newValue, setAssistOptions, "/auto-assistant/");
     }
 
     function prepareAndSubmit() {
