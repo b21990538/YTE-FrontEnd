@@ -14,11 +14,10 @@ function AddCourse({isOpen, close, submit}) {
     const [roomOptions, setRoomOptions] = useState([]);
 
     function onFormChange(event) {
-        const name = event.target.name;
-        const value = event.target.value;
-        const newState = {...formState};
-        newState[name] = value;
-        setFormState(newState);
+        setFormState({
+            ...formState,
+            [event.target.name]: event.target.value,
+        });
     }
 
     async function handleLectAutocomplete(event, newValue) {

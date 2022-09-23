@@ -9,6 +9,7 @@ import MyCoursesPage from "../page/MyCourses/MyCoursesPage";
 import CoursePage from "../page/Course/CoursePage";
 import ExamPage from "../page/Exam/ExamPage";
 import HomeworkPage from "../page/Homework/HomeworkPage";
+import ListRoomsPage from "../page/ListRooms/ListRoomsPage";
 
 function RoleRoutes() {
 
@@ -30,6 +31,7 @@ function RoleRoutes() {
             <Route path="/" element={<Home/>}/>
             <Route path="/users" element={<AdminListUsersPage/>}/>
             <Route path="/courses" element={<ListCoursesPage/>}/>
+            <Route path="/rooms" element={<ListRoomsPage/>}/>
             <Route path="/courses/:courseId" element={<CoursePage/>}/>
             <Route path="/*" element={<NotFound/>}/>
         </Routes>;

@@ -26,7 +26,7 @@ function ExamPage() {
         }
     }
 
-    return <div>
+    return <div style={{padding: "0 15px"}}>
         <h2>{exam.name}</h2>
         <ExamGradesList examGrades={examGrades}/>
     </div>;

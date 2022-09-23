@@ -27,7 +27,7 @@ function HomeworkPage() {
     }
 
 
-    return <div>
+    return <div style={{padding: "0 15px"}}>
         <h2>{homework.info}</h2>
         <HomeworkGradesList homeworkGrades={homeworkGrades}/>
     </div>;

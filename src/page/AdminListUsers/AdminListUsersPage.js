@@ -26,12 +26,30 @@ function AdminListUsersPage() {
         }
     }
 
+    async function handlePacify() {
+        if (selectedIds.length < 1) {
+            toast.warn("No user selected");
+            return;
+        }
+        try {
+            const response = await axios.put(`/pacify-user/${selectedIds[0]}`);
+            toast.success(response.data.message);
+        }
+        catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+
     return <div>
         <Box sx={{flexGrow: 1}}>
             <Grid container spacing={2}>
                 <Grid item xs={2}>
                     <Button variant={"outlined"} fullWidth
                             onClick={() => setAddDialogOpen(true)}>Add</Button>
+                </Grid>
+                <Grid item xs={2}>
+                    <Button variant={"outlined"} fullWidth
+                            onClick={handlePacify}>Toggle Pacify</Button>
                 </Grid>
                 <Grid item xs={2}>
                     <Button variant={"outlined"} fullWidth color={"secondary"}

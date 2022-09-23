@@ -20,7 +20,7 @@ function AddAssistant({isOpen, close, submit}) {
     }
 
     return <Dialog open={isOpen} fullWidth maxWidth={"sm"}>
-        <DialogTitle>Add Assitant</DialogTitle>
+        <DialogTitle>Add Assistant</DialogTitle>
         <DialogContent>
             <Autocomplete
                 freeSolo

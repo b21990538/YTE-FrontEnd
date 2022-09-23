@@ -16,4 +16,13 @@ const CourseColumns = [
     {field: 'lectUsername', headerName: 'Lecturer', width: 150},
 ];
 
-export {UserColumns, CourseColumns};
+const RoomColumns = [
+    {field: 'name', headerName: 'Name', width: 100},
+    {field: 'capacity', headerName: 'Capacity', width: 100},
+    {field: 'hasProjection', headerName: 'Has Projection', width: 150},
+    {field: 'hasComputer', headerName: 'Has Computer', width: 150},
+    {field: 'hasAirCond', headerName: 'Has Air Conditioning', width: 150},
+    {field: 'hasWindow', headerName: 'Has Window', width: 150},
+];
+
+export {UserColumns, CourseColumns, RoomColumns};

@@ -28,7 +28,7 @@ function EditCourse({isOpen, close, submit, id}) {
         }
     }, [isOpen]);
 
-    async function fetchCourse() {
+    async function fetchCourse() {  // TODO use setFormState
         const response = await axios.get(`/courses/${id}`);
         formState.name = response.data.name;
         formState.code = response.data.code;

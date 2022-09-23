@@ -32,6 +32,11 @@ const Routes = {
             name: "Courses",
             path: "/courses"
         },
+        {
+            id: 3,
+            name: "Rooms",
+            path: "/rooms"
+        },
     ],
     ASSISTANT: [
         {
