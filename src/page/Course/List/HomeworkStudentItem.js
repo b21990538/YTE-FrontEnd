@@ -3,13 +3,17 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import {Button, ListItem, ListItemText} from "@mui/material";
 import FileDownload from "js-file-download";
+import GradeDetails from "./GradeData/GradeDetails";
 
 function HomeworkStudentItem({homework}) {
 
     const [score, setScore] = useState();
+    const [gradeData, setGradeData] = useState([]);
+    const [isDetailsOpen, setDetailsOpen] = useState(false);
 
     useEffect(()=> {
         fetchScore().then();
+        fetchGradeData().then();
     },[]);
 
     async function fetchScore() {
@@ -18,6 +22,15 @@ function HomeworkStudentItem({homework}) {
             setScore(response.data);
         }
         catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+
+    async function fetchGradeData() {
+        try {
+            const response = await axios.get(`/hw-grade/grade-data/${homework.id}`);
+            setGradeData(response.data);
+        } catch (error) {
             toast.error(error.response.data.message);
         }
     }
@@ -63,8 +76,10 @@ function HomeworkStudentItem({homework}) {
                 homework.assistant.surname + " - " + homework.fileName}
         />
         <div>Score: {score ? score: "-"}</div>
-        <input onChange={handleFileSelect} name={"info"} type={"file"}/>
         <Button onClick={handleDownload} variant={"contained"}>Download File</Button>
+        <Button onClick={() => setDetailsOpen(true)} variant={"contained"}>Details</Button>
+        <input onChange={handleFileSelect} name={"info"} type={"file"}/>
+        <GradeDetails isOpen={isDetailsOpen} close={() => setDetailsOpen(false)} data={gradeData}/>
     </ListItem>;
 }
 

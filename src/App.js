@@ -8,10 +8,8 @@ import AppWrapper from "./component/AppWrapper";
 import UserContext from "./context/UserContext";
 import React, {useState} from "react";
 import {ToastContainer} from "react-toastify";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import {LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
 
 const darkTheme = createTheme({
     palette: {
@@ -21,7 +19,7 @@ const darkTheme = createTheme({
 
 function App() {
 
-    const [userData, setUserData] = useState({id: -1, username: "", authorities:[]});
+    const [userData, setUserData] = useState({id: -1, username: "", authorities: []});
 
     const userContextData = {
         userData,
@@ -31,11 +29,9 @@ function App() {
     return <Router>
         <UserContext.Provider value={userContextData}>
             <ThemeProvider theme={darkTheme}>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <CssBaseline/>
-                    <AppWrapper/>
-                    <ToastContainer theme={"dark"}/>
-                </LocalizationProvider>
+                <CssBaseline/>
+                <AppWrapper/>
+                <ToastContainer theme={"dark"}/>
             </ThemeProvider>
         </UserContext.Provider>
     </Router>;
